@@ -119,6 +119,19 @@ export const completeAuth = async (code: string) => {
   // Use the current path for redirect URI
   const redirectUri = window.location.origin + '/login';
   
+  // Check if we already have a token
+  if (typeof window !== 'undefined' && localStorage.getItem('dropboxToken')) {
+    console.log('Already authenticated with a token');
+    return true;
+  }
+  
+  // Check if this code has been used before
+  const lastUsedCode = localStorage.getItem('lastUsedAuthCode');
+  if (lastUsedCode === code) {
+    console.log('This authorization code has already been used');
+    return isAuthenticated(); // Return current auth status instead of error
+  }
+  
   // Get the code verifier from localStorage
   const codeVerifier = localStorage.getItem('dropboxCodeVerifier');
   if (!codeVerifier) {
@@ -131,7 +144,9 @@ export const completeAuth = async (code: string) => {
     console.log('Code:', code.substring(0, 5) + '...');
     console.log('Redirect URI:', redirectUri);
     console.log('Code Verifier:', codeVerifier.substring(0, 5) + '...');
-    console.log('Current URL:', window.location.href);
+    
+    // Store this code as used
+    localStorage.setItem('lastUsedAuthCode', code);
     
     // Use fetch directly to exchange the code for a token
     console.log('Preparing token request with PKCE...');
@@ -161,6 +176,13 @@ export const completeAuth = async (code: string) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Token exchange failed. Response:', errorText);
+      
+      // If the error is "code has already been used" and we have a token, don't throw an error
+      if (errorText.includes('invalid_grant') && errorText.includes('already been used') && isAuthenticated()) {
+        console.log('Code was already used, but we have a valid token');
+        return true;
+      }
+      
       throw new Error('Failed to exchange authorization code for access token');
     }
     
@@ -191,6 +213,13 @@ export const completeAuth = async (code: string) => {
     return true;
   } catch (error) {
     console.error('Dropbox authentication error:', error);
+    
+    // If we already have a token, return true instead of propagating the error
+    if (isAuthenticated()) {
+      console.log('Error occurred but we already have a valid token');
+      return true;
+    }
+    
     throw error;
   }
 };
