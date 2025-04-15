@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 9%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 16%;
+    --card-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --primary: 142 72% 47%;
+    --primary-foreground: 0 0% 100%;
+  }
+
+  body {
+    @apply bg-secondary text-accent-muted;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .player-container {
+    @apply fixed bottom-0 left-0 right-0 bg-secondary-light border-t border-secondary-lighter p-2 sm:p-3 md:p-4 z-50;
+  }
+  
+  .slider {
+    @apply h-2 rounded-full bg-secondary-dark overflow-hidden;
+  }
+  
+  .slider-inner {
+    @apply h-full bg-primary rounded-full transition-all duration-100;
+  }
+
+  .player-button {
+    @apply p-1 sm:p-2 rounded-full text-accent hover:bg-secondary-lighter transition-colors duration-200;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-md text-accent-muted hover:text-accent hover:bg-secondary-light transition-colors duration-200;
+  }
+  
+  .active-link {
+    @apply text-accent bg-secondary-light;
+  }
+  
+  /* Adjustments for player controls */
+  input[type="range"] {
+    @apply accent-primary cursor-pointer;
+  }
+  
+  /* Fix for last track showing issue */
+  .main-content {
+    @apply pb-24 sm:pb-28; /* Add padding to bottom to prevent content being hidden behind player */
+  }
+  
+  /* Add padding to top on mobile to prevent overlap with hamburger icon */
+  @media (max-width: 768px) {
+    .main-content {
+      @apply pt-0; /* Reset padding since we now have the title bar */
+    }
+    
+    /* Remove left padding from page titles since we have a centered title bar now */
+    .main-content h1:first-of-type {
+      @apply mt-0 pl-0;
+    }
+  }
+  
+  /* Mobile sidebar */
+  .mobile-sidebar {
+    @apply fixed bottom-0 left-0 right-0 bg-secondary border-t border-secondary-lighter z-40 transform transition-transform duration-300 ease-in-out;
+  }
+  
+  .mobile-sidebar-open {
+    @apply translate-y-0;
+  }
+  
+  .mobile-sidebar-closed {
+    @apply translate-y-full;
+  }
+  
+  /* Responsive table */
+  .responsive-table {
+    @apply w-full;
+  }
+  
+  @media (max-width: 640px) {
+    .responsive-table thead {
+      @apply hidden;
+    }
+    
+    .responsive-table tr {
+      @apply block border-b border-secondary-lighter;
+    }
+    
+    .responsive-table td {
+      @apply block text-right py-2 px-3 relative;
+    }
+    
+    .responsive-table td:before {
+      @apply content-[attr(data-label)] float-left font-medium text-accent-muted;
+    }
+  }
+} 
