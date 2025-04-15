@@ -1,7 +1,7 @@
 'use client';
 
 import { Dropbox } from 'dropbox';
-import { Track } from '@/lib/context/PlayerContext';
+import { Track } from '../types';
 
 // Get the Dropbox app key from environment variables
 const CLIENT_ID = process.env.NEXT_PUBLIC_DROPBOX_APP_KEY;

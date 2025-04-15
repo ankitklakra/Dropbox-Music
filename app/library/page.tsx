@@ -6,7 +6,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import PlayerControls from '@/components/player/PlayerControls';
 import { isAuthenticated, listAudioFiles } from '@/lib/services/dropboxService';
 import { usePlayer } from '@/lib/context/PlayerContext';
-import { Track } from '@/lib/context/PlayerContext';
+import { Track } from '@/lib/types';
 import { FiMusic, FiPlay, FiPause, FiPlus } from 'react-icons/fi';
 
 export default function Library() {

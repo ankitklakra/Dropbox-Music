@@ -5,7 +5,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import PlayerControls from '@/components/player/PlayerControls';
 import { isAuthenticated } from '@/lib/services/dropboxService';
 import { useRouter } from 'next/navigation';
-import { Track } from '@/lib/context/PlayerContext';
+import { Track } from '@/lib/types';
 import { FiMusic, FiFolder } from 'react-icons/fi';
 
 export default function Home() {

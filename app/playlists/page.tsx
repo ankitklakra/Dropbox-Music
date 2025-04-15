@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiPlus, FiTrash2, FiPlay, FiMusic } from 'react-icons/fi';
 import { usePlayer } from '@/lib/context/PlayerContext';
-import { Track } from '@/lib/context/PlayerContext';
+import { Track } from '@/lib/types';
 import { isAuthenticated } from '@/lib/services/dropboxService';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
