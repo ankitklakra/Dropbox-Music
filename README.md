@@ -107,6 +107,26 @@ music-player/
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Deployment on Netlify
+
+Follow these steps to deploy the application on Netlify:
+
+1. Fork or clone this repository to your GitHub account
+2. Log in to [Netlify](https://www.netlify.com/)
+3. Click on "New site from Git"
+4. Select GitHub as your provider
+5. Choose the repository you created
+6. Configure build settings:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+7. Add environment variables:
+   - Add `NEXT_PUBLIC_DROPBOX_APP_KEY` with your Dropbox app key
+8. Click "Deploy site"
+
+### Additional Netlify Configuration
+
+The repository includes a `netlify.toml` file with the necessary configuration for Next.js deployment. Make sure your Dropbox app is configured to allow your Netlify domain in the redirect URIs.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
