@@ -57,6 +57,25 @@ A modern music player application that integrates with Dropbox for cloud storage
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+## Adding Music to Dropbox
+
+For the application to display and play your music, you need to:
+
+1. Create a folder named `music` in your Dropbox app folder:
+   - After setting up your Dropbox app, a dedicated folder will be created in your Dropbox account named after your app
+   - Inside this app folder, create a new folder called `music`
+
+2. Add your music files to this folder:
+   - Supported formats: MP3, FLAC, WAV
+   - For best results, name your files as `Artist - Title.mp3` (the application will extract artist and title information from the filename)
+   - You can organize your music into subfolders if needed
+
+3. After adding music, refresh the application:
+   - The music player will scan your `/music` folder and display all compatible audio files
+   - If you add new music files while the application is running, you'll need to refresh the page to see them
+
+Note: If no music is found, you'll see a message prompting you to add music to your Dropbox music folder.
+
 ## Project Structure
 
 ```
