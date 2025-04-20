@@ -7,7 +7,7 @@ import PlayerControls from '@/components/player/PlayerControls';
 import { isAuthenticated, listAudioFiles } from '@/lib/services/dropboxService';
 import { usePlayer } from '@/lib/context/PlayerContext';
 import { Track } from '@/lib/types';
-import { FiMusic, FiPlay, FiPause, FiPlus, FiRefreshCw } from 'react-icons/fi';
+import { FiMusic, FiPlay, FiPause, FiPlus } from 'react-icons/fi';
 
 export default function Library() {
   const router = useRouter();
@@ -15,39 +15,7 @@ export default function Library() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [errorType, setErrorType] = useState<'folder' | 'general' | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Load tracks from Dropbox
-  const fetchTracks = async () => {
-    setLoading(true);
-    setError(null);
-    setErrorType(null);
-
-    try {
-      const audioTracks = await listAudioFiles();
-      setTracks(audioTracks);
-      
-      // Initialize the playlist with all tracks
-      setPlaylist(audioTracks);
-    } catch (err) {
-      console.error('Failed to load tracks:', err);
-      
-      // Check if the error might be related to missing folder
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      if (errorMessage.includes('path/not_found') || 
-          errorMessage.includes('not_found') || 
-          audioTracks?.length === 0) {
-        setError('No music files found in your Dropbox account.');
-        setErrorType('folder');
-      } else {
-        setError('Failed to load your music library. Please try again.');
-        setErrorType('general');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     // Check if user is authenticated with Dropbox
@@ -55,6 +23,25 @@ export default function Library() {
       router.push('/login');
       return;
     }
+
+    // Load tracks from Dropbox
+    const fetchTracks = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const audioTracks = await listAudioFiles();
+        setTracks(audioTracks);
+        
+        // Initialize the playlist with all tracks
+        setPlaylist(audioTracks);
+      } catch (err) {
+        console.error('Failed to load tracks:', err);
+        setError('No music found in your dropbox account. Please add some music in, music folder in dropbox account and refresh the page!!!');
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchTracks();
   }, [router, setPlaylist]);
@@ -119,32 +106,9 @@ export default function Library() {
             </div>
           </div>
 
-          {error && errorType === 'folder' ? (
-            <div className="bg-primary/10 border border-primary text-accent px-5 py-5 rounded-md mb-6">
-              <h3 className="text-lg font-semibold mb-3">Music Folder Setup Required</h3>
-              <p className="mb-4">To use this music player, you need to set up your Dropbox account:</p>
-              <ol className="list-decimal ml-5 mb-4 space-y-2">
-                <li>Create a folder named <strong>"music"</strong> in your Dropbox account</li>
-                <li>Upload your MP3, FLAC, or WAV files to this folder</li>
-                <li>For best results, name your files as <strong>"Artist - Title.mp3"</strong></li>
-                <li>Return to this app and refresh the page</li>
-              </ol>
-              <button 
-                onClick={() => fetchTracks()}
-                className="mt-2 flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md transition-colors"
-              >
-                <FiRefreshCw className="w-4 h-4" /> Refresh Library
-              </button>
-            </div>
-          ) : error && (
+          {error && (
             <div className="bg-red-900/20 border border-red-800 text-red-100 px-4 py-3 rounded-md mb-4 sm:mb-6">
               {error}
-              <button 
-                onClick={() => fetchTracks()}
-                className="ml-4 text-white underline hover:no-underline"
-              >
-                Try Again
-              </button>
             </div>
           )}
 

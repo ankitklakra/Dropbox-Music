@@ -76,7 +76,7 @@ export default function Settings() {
             
             <div className="mt-3 sm:mt-4 flex flex-wrap gap-3 sm:gap-4">
               <a 
-                href="https://github.com" 
+                href="https://github.com/ankitklakra/Dropbox-Music" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center text-primary hover:text-primary-dark transition-colors text-sm sm:text-base"
